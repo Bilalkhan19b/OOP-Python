@@ -1,10 +1,39 @@
 class Atm:
-    def __init__(self):
-        self.pin = ""
-        self.balance = 0
-        self.menu()
+    # static/Class Variable (same for all instances)
+    __counter = 0
 
-    def menu(self):
+    # Special/Magic/Dunder Methods eg:(__str__,__init__,__add__)...etc
+    def __init__(self):  # Constructor
+        # Instance Variables (different for all instances)
+        self.__pin = ""
+        self.__balance = 0
+        self.sno = Atm.__counter
+        Atm.__counter = Atm.__counter + 1
+
+        self.__menu()
+
+    @staticmethod
+    def get_counter():
+        return Atm.__counter
+
+    @staticmethod
+    def set_counter(new):
+        if type(new) == int:
+            Atm.__counter = new
+        else:
+            print("Not Allowed")
+
+    def get_pin(self):
+        return self.__pin
+
+    def set_pin(self, new_pin):
+        if type(new_pin) == str:
+            self.__pin = new_pin
+            print("Pin changed successfully")
+        else:
+            print("Not Allowed")
+
+    def __menu(self):
         user_input = input("""
         Hello, How would you like to proceed?
         1. Enter 1 to create pin
@@ -27,24 +56,24 @@ class Atm:
 
     def create_pin(self):
         new_pin = input("Enter a new pin")
-        self.pin = new_pin
+        self.__pin = new_pin
         print("Pin set successfully")
 
     def deposit(self):
         temp = input("Enter your pin")
-        if temp == self.pin:
+        if temp == self.__pin:
             amount = int(input("Enter the amount to deposit"))
-            self.balance = self.balance + amount
+            self.__balance = self.__balance + amount
             print("Deposit Successfully")
         else:
             print("Invalid pin")
 
     def withdraw(self):
         temp = input("Enter your pin")
-        if temp == self.pin:
+        if temp == self.__pin:
             amount = int(input("Enter the amount to withdraw"))
-            if amount <= self.balance:
-                self.balance = self.balance - amount
+            if amount <= self.__balance:
+                self.__balance = self.__balance - amount
                 print("Withdraw Successful")
             else:
                 print("You don't have enough balance")
@@ -53,7 +82,7 @@ class Atm:
 
     def check_balance(self):
         temp = input("Enter your pin")
-        if temp == self.pin:
-            print(self.balance)
+        if temp == self.__pin:
+            print(self.__balance)
         else:
             print("Invalid pin")
